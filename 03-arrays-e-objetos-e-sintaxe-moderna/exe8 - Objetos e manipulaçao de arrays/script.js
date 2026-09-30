@@ -15,20 +15,15 @@ const carrinho = {
   cupom: null
 };
 
-function adicionarItem(carrinhoAtual, novoItem) {
-  const carrinhoNovo = {
-    ...carrinhoAtual, 
-    itens: [...carrinhoAtual.itens, novoItem]
-  };
-
-  return console.log(carrinhoNovo);
-}
-
 const novoItem = {id: 102, nome: 'pc', quantidade: 5, precoUnitario: 1000};
+const codigoCupom = "DESCONTO10";
 
-adicionarItem(carrinho, novoItem);
+/* ---------- Funçoes ---------- */
 
-console.log("--------------------");
+function adicionarItem(carrinhoAtual, novoItem) { 
+  const carrinhoNovo = { ...carrinhoAtual, itens: [...carrinhoAtual.itens, novoItem] };  
+  return carrinhoNovo; 
+}
 
 function aplicarCupom(carrinhoAtual, codigoCupom) {
   const carrinhoNovo = {
@@ -41,32 +36,30 @@ function aplicarCupom(carrinhoAtual, codigoCupom) {
     }), 
     cupom: codigoCupom
   };
-
-  console.log(carrinhoNovo);
   return carrinhoNovo;
 }
 
-const codigoCupom = "DESCONTO10";
+function calcularTotal(carrinhoAtual) {
+  return carrinhoAtual.itens.reduce((acumulador, itemAtual) => {
+    return acumulador + (itemAtual.precoUnitario * itemAtual.quantidade);
+  }, 0);
+}
 
-aplicarCupom(carrinho, codigoCupom);
+/* ---------- Inicio ----------" */
 
+console.log('1. Carrinho Inicial:', carrinho);
 
 console.log("--------------------");
 
-const carrinho2 = {
-  usuario: 'Carlos',
-  itens: [
-    { id: 101, nome: 'Headset', quantidade: 1, precoUnitario: 180 },
-    { id: 102, nome: 'pc', quantidade: 5, precoUnitario: 900 }
-  ],
-  cupom: 'DESCONTO10', 
-  
-  calcularTotal() {
-    return this.itens.reduce((acumulador, itemAtual) => {
-      return acumulador + (itemAtual.precoUnitario * itemAtual.quantidade);
-    }, 0);
-  }
-};
+const carrinhoComItem = adicionarItem(carrinho, novoItem); 
+console.log('2. Com item adicionado:', carrinhoComItem);
 
-const total = carrinho2.calcularTotal();
-console.log(`Total da compra: R$ ${total.toFixed(2)}`);
+console.log("--------------------");
+
+const carrinhoComCupom = aplicarCupom(carrinhoComItem, codigoCupom); 
+console.log('3. Com cupom aplicado:', carrinhoComCupom);
+
+console.log("--------------------");
+
+const total = calcularTotal(carrinhoComCupom); 
+console.log(`\nTotal da compra: R$ ${total.toFixed(2)}`);
